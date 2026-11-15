@@ -258,6 +258,10 @@ async function renderDashboard(view) {
   const kept = d.scheduledfor.filter((s) => s.kept === true).length;
   const recorded = d.scheduledfor.filter((s) => s.kept !== null).length;
   const minutes = d.appointment.reduce((s, a) => s + a.duration, 0);
+  // Referrals come from client.referredby (a client pointing to the client who referred them).
+  const referredCount = d.client.filter((c) => c.referredby).length;
+  const topReferrers = countBy(d.client.filter((c) => c.referredby), 'referredby')
+    .map(([id, n]) => [fullName(d, Number(id)), n]);
 
   view.innerHTML = `
     <h2>Dashboard</h2>
@@ -275,6 +279,10 @@ async function renderDashboard(view) {
       <div class="card"><h3>Room use</h3>${bars(perRoom)}</div>
       <div class="card"><h3>How clients found RAFT</h3>${bars(countBy(d.client, 'foundout'))}</div>
       <div class="card"><h3>Preferred reminder method</h3>${bars(countBy(d.client, 'remindermethod'))}</div>
+      <div class="card"><h3>Client referrals</h3>
+        <p><span class="stat">${referredCount}</span> of ${d.client.length} clients
+          (${d.client.length ? Math.round((referredCount / d.client.length) * 100) : 0}%) were referred by another client.</p>
+        <p class="muted">Top referrers</p>${bars(topReferrers)}</div>
     </div>
     ${can.seeWages() ? `<div class="card"><h3>Employee wages <span class="muted">(Admin only)</span></h3>
       <table><tr><th>Employee</th><th>Hired</th><th>Supervisor</th><th>Wage</th></tr>
