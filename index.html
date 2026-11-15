@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAFT Front Desk</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- Sign-in screen (shown until a staff member signs in) -->
+  <section id="signin" class="hidden">
+    <form id="signin-form" class="card narrow">
+      <h1>RAFT Front Desk</h1>
+      <p class="muted">Richmond Area Family Therapy — staff sign in</p>
+      <label>Email <input type="email" id="email" required autocomplete="username"></label>
+      <label>Password <input type="password" id="password" required autocomplete="current-password"></label>
+      <button type="submit">Sign in</button>
+      <p id="signin-error" class="error"></p>
+    </form>
+  </section>
+
+  <!-- The four screens (only after sign-in) -->
+  <div id="app" class="hidden">
+    <header>
+      <span class="brand">RAFT Front Desk</span>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#lookup">Client lookup</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#edit">Add / edit</a>
+      </nav>
+      <span class="who"><span id="who-email"></span> · <b id="who-role"></b>
+        <button id="signout" class="link">Sign out</button></span>
+    </header>
+    <main id="view"></main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
